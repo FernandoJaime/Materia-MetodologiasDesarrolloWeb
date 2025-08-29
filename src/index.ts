@@ -6,7 +6,7 @@ import userRoutes from "./routes/userRoutes"
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
-const mongoUri = process.env.MONGO_URI!;
+const mongoUri = process.env.MONGODB_URI!;
 
 app.use(express.json({ limit: '10mb' }));
 
