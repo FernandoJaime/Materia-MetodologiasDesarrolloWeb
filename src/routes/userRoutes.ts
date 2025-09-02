@@ -6,13 +6,15 @@ import {
     updateUser,
 } from "../controllers/userController";
 import express from "express";
+import { CreateUserDto, UpdateUserDto } from "../dto/userDto";
+import validationMiddleware from "../middlewares/middleware";
 
 const router = express.Router();
 
-router.post("/", createUser);
+router.post("/", validationMiddleware(CreateUserDto), createUser);
 router.get("/", getUsers);
 router.get("/:id", getUser);
 router.delete("/:id", deleteUser);
-router.put("/:id", updateUser);
+router.put("/:id", validationMiddleware(UpdateUserDto),updateUser);
 
 export default router;

@@ -3,22 +3,23 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'El nombre es obligatorio'],
-        maxlenghth: [50, 'El nombre no puede tener más de 50 caracteres']
+        required: [true, 'El nombre del usuario es obligatorio']
     },
     lastName:{
-        type: String
+        type: String,
+        required: [true, 'El correo del usuario es obligatorio']
     },
     email: {
         type: String,
-        required: [true, 'El correo es obligatorio'],
-        unique: [true, 'El correo ya está registrado'],
-        match: [/\S+@\S+\.\S+/, 'El correo no es válido']
+        required: [true, 'El correo del usuario es obligatorio']
     },
     age: {
-        type: Number,
-        required: [true, 'La edad es obligatoria'],
-        min: [0, 'La edad no puede ser negativa']
+        type: Number
+    },
+    role: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Role",
+        required: [true, 'El rol del usuario es obligatorio']
     }
 })
 
