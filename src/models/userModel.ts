@@ -11,10 +11,15 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        lowercase: true,
         required: [true, 'El correo del usuario es obligatorio']
     },
     age: {
         type: Number
+    },
+    password: {
+        type: String,
+        required: [true, 'La contraseña del usuario es obligatoria']
     },
     role: {
         type: mongoose.Schema.Types.ObjectId,

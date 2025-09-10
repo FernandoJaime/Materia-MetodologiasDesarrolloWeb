@@ -10,6 +10,7 @@ import {
   Min,
   ValidatorConstraint,
   ValidatorConstraintInterface,
+  ValidationArguments,
   Validate,
   MinLength
 } from "class-validator";
@@ -20,6 +21,20 @@ class isEmailUnique implements ValidatorConstraintInterface {
     const user = await userModel.findOne({ email });
     return !user;
   }
+  defaultMessage = () => "El correo ya está en uso";
+}
+
+class isEmailUniqueUpdate implements ValidatorConstraintInterface {
+  async validate(email: string, args: ValidationArguments) {
+    const userId = (args.object as any).id; 
+    const user = await userModel.findOne({ email });
+
+    if (user && !user._id.equals(userId)) {
+      return false;
+    }
+    return true;
+  }
+
   defaultMessage = () => "El correo ya está en uso";
 }
 
@@ -62,12 +77,18 @@ export class CreateUserDto {
   @IsOptional()
   age?: number;
 
+  @MinLength(6, { message: "La contraseña debe tener al menos 6 caracteres" })
+  password!: string;
+
   @IsNotEmpty({ message: "El rol es obligatorio" })
   @Validate(isRoleValid)
   role!: string;
 }
 
 export class UpdateUserDto {
+  @IsOptional()
+  id?: string; 
+
   @IsString({ message: "El nombre debe ser un texto" })
   @MinLength(3, { message: "El nombre debe tener al menos 3 caracteres" })
   @IsOptional()
@@ -79,7 +100,7 @@ export class UpdateUserDto {
   lastName?: string;
 
   @IsEmail({}, { message: "El correo no tiene un formato válido" })
-  @Validate(isEmailUnique)
+  @Validate(isEmailUniqueUpdate)
   @IsOptional()
   email?: string;
 
@@ -87,6 +108,9 @@ export class UpdateUserDto {
   @Min(1, { message: "La edad no puede ser menor a uno" })
   @IsOptional()
   age?: number;
+
+  @MinLength(6, { message: "La contraseña debe tener al menos 6 caracteres" })
+  password?: string;
 
   @Validate(isRoleValid)
   @IsOptional()
