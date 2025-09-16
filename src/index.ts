@@ -1,8 +1,10 @@
 import express, { NextFunction, Request, Response } from "express";
+import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import userRoutes from "./routes/userRoutes"
 import roleRoutes from "./routes/roleRoutes"
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
@@ -14,6 +16,11 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     console.log('middleware activo')
     next();
 });
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
+app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
