@@ -26,7 +26,7 @@ class isEmailUnique implements ValidatorConstraintInterface {
 
 class isEmailUniqueUpdate implements ValidatorConstraintInterface {
   async validate(email: string, args: ValidationArguments) {
-    const userId = (args.object as any).id; 
+    const userId = (args.object as any).id;
     const user = await userModel.findOne({ email });
 
     if (user && !user._id.equals(userId)) {
@@ -43,7 +43,7 @@ class isRoleValid implements ValidatorConstraintInterface {
   async validate(roleId: any) {
     try {
       const id = String(roleId); // Para evitar CastError
-      
+
       if (!Types.ObjectId.isValid(id)) {
         return false;
       }
@@ -87,7 +87,7 @@ export class CreateUserDto {
 
 export class UpdateUserDto {
   @IsOptional()
-  id?: string; 
+  id?: string;
 
   @IsString({ message: "El nombre debe ser un texto" })
   @MinLength(3, { message: "El nombre debe tener al menos 3 caracteres" })

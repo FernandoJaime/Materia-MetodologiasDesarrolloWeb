@@ -1,9 +1,13 @@
+import "reflect-metadata";
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import userRoutes from "./routes/userRoutes"
 import roleRoutes from "./routes/roleRoutes"
+import categoryRoutes from "./routes/categoryRoutes"
+import productRoutes from "./routes/productRoutes"
+import shoppingRoutes from "./routes/shoppingRoutes"
 import cookieParser from "cookie-parser";
 
 dotenv.config();
@@ -24,6 +28,9 @@ app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/shoppings', shoppingRoutes);
 
 app.listen(port, () => {
     console.log(`APP escuchando on port ${port}`)
