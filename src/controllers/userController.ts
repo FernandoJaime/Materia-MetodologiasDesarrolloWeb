@@ -123,3 +123,25 @@ export const logout = async (req: Request, res: Response) => {
   res.clearCookie('refreshToken');
   return res.json({ message: "Logout exitoso" });
 }
+
+export const userAccess = async (req: Request, res: Response) => {
+  try {
+    const { email } = (req as any).user;
+
+    const user = await User.findOne({ email }).populate("role");
+    if (!user) return res.status(404).json({ isAuthenticated: false });
+
+    const roleName = await Role.findById(user.role);
+    if (!roleName) return res.status(500).json({ isAuthenticated: false, error: "Rol asociado al usuario no encontrado, error de soporte" });
+
+    return res.status(200).json({
+      isAuthenticated: true,
+      email: user.email,
+      name: user.name,
+      lastName: user.lastName,
+      role: roleName.name
+    });
+  } catch (error) {
+    return res.status(500).json({ isAuthenticated: false, error });
+  }
+};

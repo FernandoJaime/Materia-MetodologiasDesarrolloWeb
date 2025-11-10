@@ -5,7 +5,8 @@ import {
     getUsers,
     updateUser,
     login, 
-    logout
+    logout,
+    userAccess
 } from "../controllers/userController";
 import express from "express";
 import { 
@@ -27,5 +28,6 @@ router.delete("/:id", verifyToken, requireRole('68b76d11cc1bc4dda22667db'), dele
 router.put("/:id", verifyToken, requireRole('68b76d11cc1bc4dda22667db'), validationMiddleware(UpdateUserDto),updateUser);
 router.post("/login", login);
 router.post("/logout", logout);
+router.get("/access/user", verifyToken, userAccess);
 
 export default router;
